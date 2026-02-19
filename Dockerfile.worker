@@ -1,0 +1,58 @@
+# ──────────────────────────────────────────────────────────────
+# Stage 1: builder
+# ──────────────────────────────────────────────────────────────
+FROM python:3.12-slim AS builder
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+
+# ──────────────────────────────────────────────────────────────
+# Stage 2: runtime com Chrome para Selenium
+# ──────────────────────────────────────────────────────────────
+FROM python:3.12-slim AS runtime
+
+WORKDIR /app
+
+# Chrome e ChromeDriver para o OscarCrawler (Selenium)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq5 \
+    wget \
+    gnupg \
+    gnupg-l10n \
+    unzip \
+    curl \
+    libglib2.0-0 \
+    libnss3 \
+    libfontconfig1 \
+    libxss1 \
+    libasound2 \
+    xvfb \
+    && mkdir -p /etc/apt/keyrings \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/keyrings/google-chrome.gpg \
+    && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" \
+       > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update && apt-get install -y --no-install-recommends \
+    google-chrome-stable \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copiar pacotes instalados do builder
+COPY --from=builder /install /usr/local
+
+# Copiar código da aplicação e do worker
+COPY app/ ./app/
+COPY worker/ ./worker/
+
+# Usuário não-root
+RUN useradd -m -u 1000 workeruser
+USER workeruser
+
+# Comando de inicialização do worker
+CMD ["python", "-m", "worker.main"]

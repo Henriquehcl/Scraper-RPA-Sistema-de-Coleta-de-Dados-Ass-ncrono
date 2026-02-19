@@ -1,0 +1,20 @@
+# Inclui todas as dependências de produção
+-r requirements.txt
+
+# ──────────────────────────────────────────
+# Testes
+# ──────────────────────────────────────────
+pytest>=8.3.0
+pytest-asyncio>=0.24.0
+pytest-cov>=6.0.0
+httpx>=0.28.0
+
+# Testcontainers para testes de integração
+testcontainers[postgres,rabbitmq]>=4.8.0
+
+# ──────────────────────────────────────────
+# Qualidade de código
+# ──────────────────────────────────────────
+ruff>=0.8.0
+black>=24.10.0
+mypy>=1.13.0

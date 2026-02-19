@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Pytest e cobertura
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Variáveis de ambiente (nunca versionar .env com credenciais reais)
+.env
+!.env.example
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+.docker/
+
+# Nix
+.direnv/
+result
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
