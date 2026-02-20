@@ -5,7 +5,7 @@ Fonte: https://www.scrapethissite.com/pages/ajax-javascript/
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, UTC
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
@@ -43,7 +43,7 @@ class OscarFilm(Base):
     # ──────────────────────────────────────────
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=lambda: datetime.now(datetime.UTC),
+        default=lambda: datetime.now(UTC),
     )
 
     def __repr__(self) -> str:

@@ -5,7 +5,7 @@ Fonte: https://www.scrapethissite.com/pages/forms/
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, UTC
 
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
@@ -47,7 +47,7 @@ class HockeyTeam(Base):
     # ──────────────────────────────────────────
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=lambda: datetime.now(datetime.UTC),
+        default=lambda: datetime.now(UTC),
     )
 
     def __repr__(self) -> str:

@@ -6,7 +6,7 @@ sem precisar de banco de dados real.
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, UTC
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -39,8 +39,8 @@ def make_mock_job(
     job.status = status
     job.items_collected = 0
     job.error_message = None
-    job.created_at = datetime.now(datetime.UTC)
-    job.updated_at = datetime.now(datetime.UTC)
+    job.created_at = datetime.now(UTC)
+    job.updated_at = datetime.now(UTC)
     return job
 
 

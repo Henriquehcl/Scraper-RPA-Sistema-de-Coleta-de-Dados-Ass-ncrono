@@ -7,7 +7,7 @@ Ciclo de vida do status:
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, UTC
 
 from sqlalchemy import DateTime, Enum, Integer, Text
 from sqlalchemy.dialects.postgresql import UUID
@@ -57,12 +57,12 @@ class Job(Base):
     # ──────────────────────────────────────────
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=lambda: datetime.now(datetime.UTC),
+        default=lambda: datetime.now(UTC),
     )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=lambda: datetime.now(datetime.UTC),
-        onupdate=lambda: datetime.now(datetime.UTC),
+        default=lambda: datetime.now(UTC),
+        onupdate=lambda: datetime.now(UTC),
     )
 
     def __repr__(self) -> str:
