@@ -9,6 +9,7 @@ Etapas:
   5. Fornecer cliente HTTP para testar a API (TestClient do FastAPI)
 """
 
+import asyncio
 import os
 from collections.abc import AsyncGenerator
 
@@ -96,25 +97,50 @@ async def api_client(
     async def override_get_db():
         yield db_session
 
-    # Override do publisher de fila
-    rmq_url = (
-        f"amqp://guest:guest@{rabbitmq_container.get_container_host_ip()}"
-        f":{rabbitmq_container.get_exposed_port(5672)}/"
-    )
-
+    # Override do publisher de fila com retry logic
     app.dependency_overrides[get_db] = override_get_db
 
-    # Conectar publisher ao RabbitMQ do container
+    # Conectar publisher ao RabbitMQ do container com múltiplas tentativas
     original_url = os.environ.get("RABBITMQ_URL", "")
-    os.environ["RABBITMQ_URL"] = rmq_url
 
-    await queue_publisher.connect()
+    # Tentar diferentes combinações de host/porta
+    connection_attempts = [
+        # Usar o IP e porta do container
+        f"amqp://guest:guest@{rabbitmq_container.get_container_host_ip()}:{rabbitmq_container.get_exposed_port(5672)}/",
+        # Fallback para localhost IPv4
+        "amqp://guest:guest@127.0.0.1:5672/",
+        # Fallback para localhost IPv6
+        "amqp://guest:guest@[::1]:5672/",
+    ]
+
+    connected = False
+    last_error = None
+
+    for attempt, rmq_url in enumerate(connection_attempts):
+        os.environ["RABBITMQ_URL"] = rmq_url
+        try:
+            await asyncio.wait_for(queue_publisher.connect(), timeout=5.0)
+            connected = True
+            break
+        except Exception as e:
+            last_error = e
+            if attempt < len(connection_attempts) - 1:
+                await asyncio.sleep(1)  # Aguardar antes de tentar novamente
+
+    if not connected:
+        raise RuntimeError(
+            f"Não foi possível conectar ao RabbitMQ após {len(connection_attempts)} tentativas. "
+            f"Último erro: {last_error}"
+        )
 
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         yield client
 
     # Cleanup
-    await queue_publisher.disconnect()
+    try:
+        await queue_publisher.disconnect()
+    except Exception:
+        pass
     app.dependency_overrides.clear()
     if original_url:
         os.environ["RABBITMQ_URL"] = original_url
