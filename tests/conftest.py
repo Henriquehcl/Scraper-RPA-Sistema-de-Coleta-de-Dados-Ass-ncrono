@@ -4,10 +4,8 @@ Fixtures globais de teste compartilhadas entre testes unitários e de integraç�
 
 import asyncio
 import uuid
-from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-import pytest_asyncio
 
 
 # ──────────────────────────────────────────────────────────────

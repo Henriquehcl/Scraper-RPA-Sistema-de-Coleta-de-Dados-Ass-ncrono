@@ -11,8 +11,8 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.services.job_service import JobService
 from app.schemas.job import JobStatus, JobType
+from app.services.job_service import JobService
 
 
 @pytest.mark.asyncio

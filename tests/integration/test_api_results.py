@@ -17,7 +17,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.hockey import HockeyTeam
 from app.models.oscar import OscarFilm
 from app.schemas.job import JobType
-from app.services.job_service import JobService
 
 
 @pytest.mark.asyncio

@@ -6,13 +6,12 @@ Etapas da comunicação:
   2. Consumer (Worker): consome mensagem, executa crawler e atualiza job
 """
 
-import json
 import logging
-from contextlib import asynccontextmanager
 from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 
 import aio_pika
-from aio_pika import Message, DeliveryMode
+from aio_pika import DeliveryMode, Message
 from aio_pika.abc import AbstractChannel, AbstractConnection
 
 from app.core.config import settings

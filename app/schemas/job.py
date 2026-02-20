@@ -4,7 +4,7 @@ Schemas Pydantic para Jobs — validação, serialização e contratos da API.
 
 import uuid
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict
 
@@ -12,13 +12,13 @@ from pydantic import BaseModel, ConfigDict
 # ──────────────────────────────────────────────────────────────
 # Enums compartilhados entre schemas e models
 # ──────────────────────────────────────────────────────────────
-class JobType(str, Enum):
+class JobType(StrEnum):
     HOCKEY = "hockey"
     OSCAR = "oscar"
     ALL = "all"
 
 
-class JobStatus(str, Enum):
+class JobStatus(StrEnum):
     PENDING = "pending"
     RUNNING = "running"
     COMPLETED = "completed"

@@ -9,7 +9,6 @@ Etapas:
   5. Fornecer cliente HTTP para testar a API (TestClient do FastAPI)
 """
 
-import asyncio
 import os
 from collections.abc import AsyncGenerator
 

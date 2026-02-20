@@ -12,7 +12,6 @@ Etapas de cada ciclo de processamento:
 """
 
 import asyncio
-import json
 import logging
 import uuid
 

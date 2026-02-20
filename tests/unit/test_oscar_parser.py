@@ -5,8 +5,9 @@ Testa a lógica de parsing sem inicializar o Selenium/WebDriver,
 usando mocks para simular o comportamento dos elementos do browser.
 """
 
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from app.crawlers.oscar_crawler import OscarCrawler
 
@@ -105,14 +106,10 @@ class TestOscarParser:
         """crawl() deve chamar _run_selenium via executor sem executá-lo diretamente."""
         with patch.object(
             crawler, "_run_selenium", return_value=[{"year": 2010, "title": "Test"}]
-        ) as mock_run:
+        ):
             # Simular executor chamando a função síncrona
             with patch(
                 "asyncio.get_event_loop"
-            ) as mock_loop:
+            ):
                 mock_executor = MagicMock()
                 mock_executor.return_value = [{"year": 2010, "title": "Test"}]
-                import asyncio
-                future = asyncio.get_event_loop().run_until_complete(
-                    asyncio.coroutine(lambda: [{"year": 2010, "title": "Test"}])()
-                )

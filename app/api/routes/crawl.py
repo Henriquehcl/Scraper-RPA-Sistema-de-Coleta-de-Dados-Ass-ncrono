@@ -7,7 +7,6 @@ Fluxo assíncrono:
   3. Retorna job_id imediatamente (não aguarda o crawling)
 """
 
-import uuid
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 

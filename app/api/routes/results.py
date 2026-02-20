@@ -14,8 +14,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.schemas.hockey import HockeyTeamResponse
-from app.schemas.oscar import OscarFilmResponse
 from app.schemas.job import JobType
+from app.schemas.oscar import OscarFilmResponse
 from app.services.job_service import JobService
 
 router = APIRouter(tags=["Results"])

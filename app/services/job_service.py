@@ -8,7 +8,7 @@ Responsabilidades:
 """
 
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -59,7 +59,7 @@ class JobService:
         job = await self.get_job(job_id)
         if job:
             job.status = JobStatus.RUNNING
-            job.updated_at = datetime.now(timezone.utc)
+            job.updated_at = datetime.now(datetime.UTC)
 
     async def mark_completed(self, job_id: uuid.UUID, items_collected: int) -> None:
         """Atualiza status para COMPLETED e registra quantos itens foram coletados."""
@@ -67,7 +67,7 @@ class JobService:
         if job:
             job.status = JobStatus.COMPLETED
             job.items_collected = items_collected
-            job.updated_at = datetime.now(timezone.utc)
+            job.updated_at = datetime.now(datetime.UTC)
 
     async def mark_failed(self, job_id: uuid.UUID, error: str) -> None:
         """Atualiza status para FAILED e salva a mensagem de erro."""
@@ -75,7 +75,7 @@ class JobService:
         if job:
             job.status = JobStatus.FAILED
             job.error_message = error
-            job.updated_at = datetime.now(timezone.utc)
+            job.updated_at = datetime.now(datetime.UTC)
 
     # ──────────────────────────────────────────
     # Consulta de resultados por job
