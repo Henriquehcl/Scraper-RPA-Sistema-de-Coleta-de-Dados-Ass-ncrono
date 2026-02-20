@@ -66,9 +66,7 @@ class TestOscarParser:
         assert record["awards"] == 6
         assert record["best_picture"] is True
 
-    def test_parse_film_table_best_picture_false(
-        self, crawler: OscarCrawler
-    ) -> None:
+    def test_parse_film_table_best_picture_false(self, crawler: OscarCrawler) -> None:
         """Campo best_picture deve ser False quando a célula estiver vazia."""
         driver = MagicMock()
         driver.find_elements.return_value = [
@@ -100,16 +98,10 @@ class TestOscarParser:
         assert records == []
 
     @pytest.mark.asyncio
-    async def test_crawl_delegates_to_executor(
-        self, crawler: OscarCrawler
-    ) -> None:
+    async def test_crawl_delegates_to_executor(self, crawler: OscarCrawler) -> None:
         """crawl() deve chamar _run_selenium via executor sem executá-lo diretamente."""
-        with patch.object(
-            crawler, "_run_selenium", return_value=[{"year": 2010, "title": "Test"}]
-        ):
+        with patch.object(crawler, "_run_selenium", return_value=[{"year": 2010, "title": "Test"}]):
             # Simular executor chamando a função síncrona
-            with patch(
-                "asyncio.get_event_loop"
-            ):
+            with patch("asyncio.get_event_loop"):
                 mock_executor = MagicMock()
                 mock_executor.return_value = [{"year": 2010, "title": "Test"}]

@@ -132,9 +132,7 @@ async def main() -> None:
         # Declarar a fila (idempotente — cria somente se não existir)
         queue = await channel.declare_queue(settings.queue_name, durable=True)
 
-        logger.info(
-            "Worker aguardando mensagens na fila '%s'...", settings.queue_name
-        )
+        logger.info("Worker aguardando mensagens na fila '%s'...", settings.queue_name)
 
         # Consumir mensagens indefinidamente
         async with queue.iterator() as queue_iter:

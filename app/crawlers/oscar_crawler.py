@@ -48,9 +48,7 @@ class OscarCrawler(BaseCrawler):
         """Executa o scraping via Selenium em thread pool."""
         self._log_start()
         try:
-            records = await asyncio.get_event_loop().run_in_executor(
-                None, self._run_selenium
-            )
+            records = await asyncio.get_event_loop().run_in_executor(None, self._run_selenium)
             self._log_done(len(records))
             return records
         except Exception as exc:
@@ -74,11 +72,7 @@ class OscarCrawler(BaseCrawler):
             wait = WebDriverWait(driver, self.timeout)
 
             # Etapa 2: aguardar os botões de ano aparecerem
-            wait.until(
-                EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, "a.year-link")
-                )
-            )
+            wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a.year-link")))
 
             # Etapa 3: coletar todos os anos disponíveis (texto dos botões)
             year_buttons = driver.find_elements(By.CSS_SELECTOR, "a.year-link")
@@ -90,9 +84,7 @@ class OscarCrawler(BaseCrawler):
                     year_records = self._scrape_year(driver, wait, year_text)
                     records.extend(year_records)
                 except Exception as exc:
-                    self.logger.warning(
-                        "Erro ao processar ano %s: %s", year_text, exc
-                    )
+                    self.logger.warning("Erro ao processar ano %s: %s", year_text, exc)
                     continue
 
         finally:
@@ -118,18 +110,12 @@ class OscarCrawler(BaseCrawler):
         driver.execute_script("arguments[0].click();", year_link)
 
         # Aguardar tabela carregar (AJAX)
-        wait.until(
-            EC.presence_of_element_located(
-                (By.CSS_SELECTOR, "table.table tbody tr.film")
-            )
-        )
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "table.table tbody tr.film")))
 
         # Parsear os filmes da tabela
         return self._parse_film_table(driver, int(year_text))
 
-    def _parse_film_table(
-        self, driver: webdriver.Chrome, year: int
-    ) -> list[dict[str, Any]]:
+    def _parse_film_table(self, driver: webdriver.Chrome, year: int) -> list[dict[str, Any]]:
         """
         Extrai os dados de cada linha da tabela de filmes.
 
@@ -145,13 +131,9 @@ class OscarCrawler(BaseCrawler):
                 nominations = int(
                     row.find_element(By.CSS_SELECTOR, "td.film-nominations").text.strip()
                 )
-                awards = int(
-                    row.find_element(By.CSS_SELECTOR, "td.film-awards").text.strip()
-                )
+                awards = int(row.find_element(By.CSS_SELECTOR, "td.film-awards").text.strip())
                 # Best Picture: célula tem classe 'film-best-picture' com '*' ou vazio
-                best_picture_cell = row.find_element(
-                    By.CSS_SELECTOR, "td.film-best-picture"
-                )
+                best_picture_cell = row.find_element(By.CSS_SELECTOR, "td.film-best-picture")
                 best_picture = bool(best_picture_cell.text.strip())
 
                 records.append(

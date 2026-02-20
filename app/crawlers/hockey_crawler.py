@@ -40,9 +40,7 @@ class HockeyCrawler(BaseCrawler):
         self._log_start()
         try:
             # Executa a parte síncrona (requests/BS4) em thread pool
-            records = await asyncio.get_event_loop().run_in_executor(
-                None, self._fetch_all_pages
-            )
+            records = await asyncio.get_event_loop().run_in_executor(None, self._fetch_all_pages)
             self._log_done(len(records))
             return records
         except Exception as exc:
@@ -122,9 +120,7 @@ class HockeyCrawler(BaseCrawler):
                     "year": int(cells[1].get_text(strip=True)),
                     "wins": int(cells[2].get_text(strip=True)),
                     "losses": int(cells[3].get_text(strip=True)),
-                    "ot_losses": self._parse_int_or_none(
-                        cells[4].get_text(strip=True)
-                    ),
+                    "ot_losses": self._parse_int_or_none(cells[4].get_text(strip=True)),
                     "win_pct": float(cells[5].get_text(strip=True)),
                     "goals_for": int(cells[6].get_text(strip=True)),
                     "goals_against": int(cells[7].get_text(strip=True)),

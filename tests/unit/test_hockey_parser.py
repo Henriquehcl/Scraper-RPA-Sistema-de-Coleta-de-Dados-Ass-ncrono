@@ -60,9 +60,7 @@ class TestHockeyParser:
         records = crawler._parse_table(soup)
         assert records == []
 
-    def test_parse_table_ignores_incomplete_rows(
-        self, crawler: HockeyCrawler
-    ) -> None:
+    def test_parse_table_ignores_incomplete_rows(self, crawler: HockeyCrawler) -> None:
         """Linhas com menos de 9 colunas devem ser ignoradas sem erro."""
         html = """
         <html><body>
@@ -99,9 +97,7 @@ class TestHockeyParser:
         soup = BeautifulSoup(html, "html.parser")
         assert crawler._get_total_pages(soup) == 3
 
-    def test_get_total_pages_fallback_to_one(
-        self, crawler: HockeyCrawler
-    ) -> None:
+    def test_get_total_pages_fallback_to_one(self, crawler: HockeyCrawler) -> None:
         """Sem paginação deve retornar 1."""
         soup = BeautifulSoup("<html></html>", "html.parser")
         assert crawler._get_total_pages(soup) == 1

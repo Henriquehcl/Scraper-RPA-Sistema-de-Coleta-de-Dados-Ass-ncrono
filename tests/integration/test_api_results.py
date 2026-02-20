@@ -23,37 +23,27 @@ from app.schemas.job import JobType
 class TestResultsEndpoints:
     """Testes dos endpoints de consulta de resultados."""
 
-    async def test_get_all_hockey_returns_200(
-        self, api_client: AsyncClient
-    ) -> None:
+    async def test_get_all_hockey_returns_200(self, api_client: AsyncClient) -> None:
         """GET /results/hockey deve retornar 200."""
         response = await api_client.get("/results/hockey")
         assert response.status_code == 200
 
-    async def test_get_all_hockey_returns_list(
-        self, api_client: AsyncClient
-    ) -> None:
+    async def test_get_all_hockey_returns_list(self, api_client: AsyncClient) -> None:
         """Resposta de GET /results/hockey deve ser uma lista."""
         response = await api_client.get("/results/hockey")
         assert isinstance(response.json(), list)
 
-    async def test_get_all_oscar_returns_200(
-        self, api_client: AsyncClient
-    ) -> None:
+    async def test_get_all_oscar_returns_200(self, api_client: AsyncClient) -> None:
         """GET /results/oscar deve retornar 200."""
         response = await api_client.get("/results/oscar")
         assert response.status_code == 200
 
-    async def test_get_all_oscar_returns_list(
-        self, api_client: AsyncClient
-    ) -> None:
+    async def test_get_all_oscar_returns_list(self, api_client: AsyncClient) -> None:
         """Resposta de GET /results/oscar deve ser uma lista."""
         response = await api_client.get("/results/oscar")
         assert isinstance(response.json(), list)
 
-    async def test_get_job_results_returns_404_for_unknown(
-        self, api_client: AsyncClient
-    ) -> None:
+    async def test_get_job_results_returns_404_for_unknown(self, api_client: AsyncClient) -> None:
         """GET /jobs/{job_id}/results deve retornar 404 para job inexistente."""
         fake_id = uuid.uuid4()
         response = await api_client.get(f"/jobs/{fake_id}/results")

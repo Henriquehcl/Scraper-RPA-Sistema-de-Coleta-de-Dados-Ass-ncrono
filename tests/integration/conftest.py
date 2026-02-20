@@ -91,6 +91,7 @@ async def api_client(
     Cliente HTTP assíncrono que chama a API FastAPI em memória.
     Substitui as dependências de DB e fila pelos containers de teste.
     """
+
     # Override do banco de dados
     async def override_get_db():
         yield db_session
@@ -109,9 +110,7 @@ async def api_client(
 
     await queue_publisher.connect()
 
-    async with AsyncClient(
-        transport=ASGITransport(app=app), base_url="http://test"
-    ) as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         yield client
 
     # Cleanup

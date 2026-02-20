@@ -46,9 +46,7 @@ class JobService:
 
     async def list_jobs(self) -> list[Job]:
         """Retorna todos os jobs ordenados do mais recente ao mais antigo."""
-        result = await self.db.execute(
-            select(Job).order_by(Job.created_at.desc())
-        )
+        result = await self.db.execute(select(Job).order_by(Job.created_at.desc()))
         return list(result.scalars().all())
 
     # ──────────────────────────────────────────
@@ -82,16 +80,12 @@ class JobService:
     # ──────────────────────────────────────────
     async def get_hockey_results_by_job(self, job_id: uuid.UUID) -> list[HockeyTeam]:
         """Retorna todos os times de hockey coletados por um job específico."""
-        result = await self.db.execute(
-            select(HockeyTeam).where(HockeyTeam.job_id == job_id)
-        )
+        result = await self.db.execute(select(HockeyTeam).where(HockeyTeam.job_id == job_id))
         return list(result.scalars().all())
 
     async def get_oscar_results_by_job(self, job_id: uuid.UUID) -> list[OscarFilm]:
         """Retorna todos os filmes do Oscar coletados por um job específico."""
-        result = await self.db.execute(
-            select(OscarFilm).where(OscarFilm.job_id == job_id)
-        )
+        result = await self.db.execute(select(OscarFilm).where(OscarFilm.job_id == job_id))
         return list(result.scalars().all())
 
     # ──────────────────────────────────────────
@@ -106,7 +100,5 @@ class JobService:
 
     async def get_all_oscar_results(self) -> list[OscarFilm]:
         """Retorna todos os dados do Oscar coletados (todos os jobs)."""
-        result = await self.db.execute(
-            select(OscarFilm).order_by(OscarFilm.year, OscarFilm.title)
-        )
+        result = await self.db.execute(select(OscarFilm).order_by(OscarFilm.year, OscarFilm.title))
         return list(result.scalars().all())
