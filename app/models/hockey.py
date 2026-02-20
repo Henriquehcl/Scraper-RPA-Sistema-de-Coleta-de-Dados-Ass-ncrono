@@ -5,7 +5,7 @@ Fonte: https://www.scrapethissite.com/pages/forms/
 """
 
 import uuid
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID

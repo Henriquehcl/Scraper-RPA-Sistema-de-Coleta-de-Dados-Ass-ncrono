@@ -5,7 +5,7 @@ Fonte: https://www.scrapethissite.com/pages/ajax-javascript/
 """
 
 import uuid
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
